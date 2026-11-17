@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PT Kishi Manufaktur Indonesia - Precision Automotive & Metal Stamping</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#E60012',
+              darkred: '#B8000E',
+              dark: '#111827',
+              gray: '#F4F5F7',
+              accent: '#2563EB'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+    /* Custom Transitions */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.4s ease-in-out; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Submenu Hover Dropdown Smooth Effect */
+    .dropdown-menu {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all 0.25s ease-in-out;
+    }
+    .group:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-gray-900 text-white dark:bg-white dark:text-gray-900 px-6 py-4 rounded-xl shadow-2xl flex items-center space-x-3 pointer-events-none">
+    <i data-lucide="info" class="w-5 h-5 text-brand-red"></i>
+    <span id="toast-message" class="text-sm font-semibold">Pesan berhasil dikirim!</span>
+  </div>
+
+  <!-- Top Announcement Bar -->
+  <div class="bg-brand-red text-white text-xs font-semibold py-2 px-4 flex justify-between items-center">
+    <div class="container mx-auto flex justify-between items-center">
+      <span>PT KISHI MANUFAKTUR INDONESIA </span>
+      <div class="flex items-center space-x-4">
+        <button id="theme-toggle" onclick="toggleTheme()" class="hover:text-gray-200 flex items-center space-x-1 text-xs">
+          <i data-lucide="sun" class="w-3.5 h-3.5 hidden dark:block"></i>
+          <i data-lucide="moon" class="w-3.5 h-3.5 block dark:hidden"></i>
+          <span class="hidden sm:inline">Mode Tampilan</span>
+        </button>
+        <span class="text-white/40">|</span>
+        <button onclick="changeLanguage('ID')" class="font-bold underline">ID</button>
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- Corporate Header / Navigation -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm">
+    <div class="container mx-auto px-4 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo -->
+        <a href="#" onclick="switchTab('home')" class="flex items-center space-x-3">
+          <div class="">
+            
+          </div>
+           <div id="companyLogo" class="w-11 h-11 rounded-xl overflow-hidden bg-transparent shadow-sm group-hover:scale-105 transition-transform duration-300">
+    <img 
+      src="https://cdn.corenexis.com/f/zzxoNVxq.png" 
+      alt="Logo PT Kishi Manufaktur Indonesia" 
+      class="w-full h-full object-cover"
+    />
+  </div>
+
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden lg:flex items-center space-x-8 text-sm font-semibold text-gray-700 dark:text-gray-300">
+          
+          <!-- Corporate -->
+          <div class="relative group py-6">
+            <button class="hover:text-brand-red flex items-center space-x-1 py-1">
+              <span>Corporate</span>
+              <i data-lucide="chevron-down" class="w-4 h-4"></i>
+            </button>
+            <div class="dropdown-menu absolute top-full left-0 w-64 bg-white dark:bg-gray-800 shadow-xl rounded-xl border border-gray-100 dark:border-gray-700 py-3">
+              <a href="#" onclick="switchTab('corporate-values')" class="block px-5 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-brand-red"> Visi & Misi Perusahaan</a>
+              <a href="#" onclick="switchTab('executive-board')" class="block px-5 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-brand-red">Executive Board</a>
+              
+            
+            </div>
+          </div>
+
+          <!-- Manufacturing -->
+          <div class="relative group py-6">
+            <button class="hover:text-brand-red flex items-center space-x-1 py-1">
+              <span>Manufacturing</span>
+              <i data-lucide="chevron-down" class="w-4 h-4"></i>
+            </button>
+            <div class="dropdown-menu absolute top-full left-0 w-64 bg-white dark:bg-gray-800 shadow-xl rounded-xl border border-gray-100 dark:border-gray-700 py-3">
+              <a href="#" onclick="switchTab('product-showcase')" class="block px-5 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-brand-red font-bold text-brand-red">Showcase Produk</a>
+              <a href="#" onclick="switchTab('factory-facilities')" class="block px-5 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-brand-red">Fasilitas Pabrik</a>
+              
+            </div>
+          </div>
+
+          <!-- Hubungi Kami -->
+          <a href="#" onclick="switchTab('contact-us')" class="bg-brand-red hover:bg-brand-darkred text-white px-6 py-2.5 rounded-full font-bold shadow-md transition-all flex items-center space-x-2">
+            <i data-lucide="phone-call" class="w-4 h-4"></i>
+            <span>Hubungi Kami</span>
+          </a>
+        </nav>
+
+        <!-- Search & Mobile Menu Trigger -->
+        <div class="flex items-center space-x-3">
+          <button onclick="openSearchModal()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full text-gray-600 dark:text-gray-300">
+            <i data-lucide="search" class="w-5 h-5"></i>
+          </button>
+          <button onclick="toggleMobileMenu()" class="lg:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full text-gray-600 dark:text-gray-300">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu Drawer -->
+  <div id="mobile-menu" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden lg:hidden">
+    <div class="bg-white dark:bg-gray-900 w-4/5 max-w-sm h-full p-6 overflow-y-auto">
+      <div class="flex items-center justify-between mb-8">
+        <span class="font-bold text-xl text-brand-red">PT KISHI MANUFAKTUR INDONESIA</span>
+        <button onclick="toggleMobileMenu()"><i data-lucide="x" class="w-6 h-6"></i></button>
+      </div>
+      <div class="space-y-4 font-semibold text-gray-800 dark:text-gray-200">
+        <a href="#" onclick="switchTab('home'); toggleMobileMenu();" class="block py-2 border-b">Home</a>
+        <a href="#" onclick="switchTab('product-showcase'); toggleMobileMenu();" class="block py-2 border-b">Showcase Produk</a>
+        <a href="#" onclick="switchTab('corporate-values'); toggleMobileMenu();" class="block py-2 border-b">VISI & MISI Perusahaan</a>
+        <a href="#" onclick="switchTab('executive-board'); toggleMobileMenu();" class="block py-2 border-b">Executive Board</a>
+        <a href="#" onclick="switchTab('company-milestone'); toggleMobileMenu();" class="block py-2 border-b"></a>
+
+        <a href="#" onclick="switchTab('factory-facilities'); toggleMobileMenu();" class="block py-2 border-b">Fasilitas Pabrik</a>
+        <a href="#" onclick="switchTab('how-we-manufacture'); toggleMobileMenu();" class="block py-2 border-b">Proses Produksi</a>
+        <a href="#" onclick="switchTab('contact-us'); toggleMobileMenu();" class="block py-2.5 bg-brand-red text-white text-center rounded-xl font-bold mt-4">Hubungi Kami</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Modal -->
+  <div id="search-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-800 w-full max-w-2xl rounded-2xl p-6 shadow-2xl relative">
+      <button onclick="closeSearchModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 dark:hover:text-white">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+      <h3 class="text-xl font-bold mb-4 flex items-center space-x-2">
+        <i data-lucide="search" class="w-5 h-5 text-brand-red"></i>
+        <span>Pencarian Situs PT Kishi Manufaktur Indonesia</span>
+      </h3>
+      <input type="text" id="search-input" onkeyup="handleSearch(event)" placeholder="Ketik kata kunci: Stamping, Milestone, Beranda..." class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-red">
+      <div id="search-results" class="mt-4 space-y-2 max-h-60 overflow-y-auto"></div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="min-h-screen">
+
+    <!-- TAB 1: HOME PAGE -->
+    <div id="home" class="tab-content active">
+      
+      <!-- HERO BANNER SLIDER -->
+      <section class="relative bg-gray-900 text-white overflow-hidden">
+        <div id="hero-slider" class="relative h-[550px] lg:h-[650px]">
+          
+          <!-- Slide 1 -->
+          <div class="slide absolute inset-0 transition-opacity duration-700 opacity-100 flex items-center">
+            <img src="https://cdn.imagetourls.com/uploads/tyImg/W2hrBaE9.jpg" class="absolute inset-0 w-full h-full object-cover opacity-40" alt="Kishi Manufaktur">
+            <div class="container mx-auto px-6 lg:px-12 relative z-10">
+              <div class="max-w-2xl space-y-6">
+                <span class="inline-block bg-brand-red text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full">Precision Manufacturing</span>
+                <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+                  Inovasi Presisi, <span class="text-brand-red">Membangun Masa Depan</span> Otomotif
+                </h1>
+                <p class="text-lg text-gray-200">
+                 PT Kishi Manufaktur Indonesia menghadirkan standar tertinggi dalam presisi komponen otomotif melalui kolaborasi erat, keahlian mendalam, dan inovasi teknologi berkelanjutan.
+
+                </p>
+                <div class="flex flex-wrap gap-4 pt-2">
+                  <button onclick="switchTab('product-showcase')" class="bg-brand-red hover:bg-brand-darkred text-white px-8 py-3.5 rounded-full font-bold shadow-lg transition-all flex items-center space-x-2">
+                    <span>Lihat Produk Komponen</span>
+                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                  </button>
+                  <button onclick="switchTab('factory-facilities')" class="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-8 py-3.5 rounded-full font-bold backdrop-blur-md transition-all">
+                    Fasilitas Pabrik
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="slide absolute inset-0 transition-opacity duration-700 opacity-0 flex items-center">
+            <img src="https://cdn.imagetourls.com/uploads/tyImg/7sK00xa1.png" class="absolute inset-0 w-full h-full object-cover opacity-40" alt="Automotive Tech">
+            <div class="container mx-auto px-6 lg:px-12 relative z-10">
+              <div class="max-w-2xl space-y-6">
+                <span class="inline-block bg-blue-600 text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full">Industri Standard</span>
+                <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+                  Mitra Manufaktur Terpercaya untuk Pertumbuhan Industri
+                </h1>
+                <p class="text-lg text-gray-200">
+                  Sistem operasi mesin terintegrasi dan otomatisasi tingkat lanjut memastikan setiap komponen memiliki daya tahan, kekuatan struktur, dan akurasi mikrometer yang sempurna.
+                </p>
+                <button onclick="switchTab('product-showcase')" class="bg-brand-red hover:bg-brand-darkred text-white px-8 py-3.5 rounded-full font-bold shadow-lg">
+                  Pelajari Selengkapnya
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Slider Navigation Dots -->
+        <div class="absolute bottom-8 right-8 z-20 flex space-x-3">
+          <button onclick="prevSlide()" class="p-3 bg-white/20 hover:bg-white/40 rounded-full backdrop-blur-md"><i data-lucide="chevron-left" class="w-6 h-6"></i></button>
+          <button onclick="nextSlide()" class="p-3 bg-white/20 hover:bg-white/40 rounded-full backdrop-blur-md"><i data-lucide="chevron-right" class="w-6 h-6"></i></button>
+        </div>
+      </section>
+
+      <!-- QUICK STATS -->
+      <section class="py-12 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+          <div>
+            <div class="text-4xl font-extrabold text-brand-red mb-1"></div>
+            <div class="text-sm font-semibold text-gray-500 dark:text-gray-400"></div>
+          </div>
+          <div>
+            <div class="text-4xl font-extrabold text-brand-red mb-1"></div>
+            <div class="text-sm font-semibold text-gray-500 dark:text-gray-400"></div>
+          </div>
+          <div>
+            <div class="text-4xl font-extrabold text-brand-red mb-1"></div>
+            <div class="text-sm font-semibold text-gray-500 dark:text-gray-400"></div>
+          </div>
+          <div>
+            <div class="text-4xl font-extrabold text-brand-red mb-1"></div>
+            <div class="text-sm font-semibold text-gray-500 dark:text-gray-400"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURED PRODUCTS PREVIEW -->
+      <section class="py-20 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto px-6">
+          <div class="flex justify-between items-end mb-12">
+            <div>
+              <h2 class="text-3xl font-extrabold tracking-tight">Kategori Produk Unggulan</h2>
+              <p class="text-gray-500 dark:text-gray-400 mt-2">Dibuat dengan teknologi presisi tingkat tinggi</p>
+            </div>
+            <button onclick="switchTab('product-showcase')" class="text-brand-red font-bold hover:underline flex items-center space-x-2">
+              <span>Lihat Semua Produk</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 group hover:-translate-y-2 transition-all duration-300">
+              <img src="https://cdn.imagetourls.com/uploads/tyImg/waUgaKaM.jpg" class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500" alt="Body Stamping">
+              <div class="p-6">
+                <span class="text-xs font-bold text-brand-red uppercase tracking-wider">DIE-CASTING DIVISION</span>
+                <h3 class="text-xl font-bold mt-1 mb-2">DIE STEEL</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Plat pemikul beban utama sasis mobil dengan tingkat kekuatan tarik hingga 980 MPa.</p>
+                <button onclick="switchTab('product-showcase')" class="mt-4 text-sm font-bold text-brand-red hover:underline flex items-center space-x-1">
+                  <span>Lihat Spesifikasi</span>
+                  <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 group hover:-translate-y-2 transition-all duration-300">
+              <img src="https://cdn.imagetourls.com/uploads/tyImg/13ohPlqds.jpg" class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500" alt="Die Casting">
+              <div class="p-6">
+                <span class="text-xs font-bold text-brand-red uppercase tracking-wider">DIE-CASTING DIVISION</span>
+                <h3 class="text-xl font-bold mt-1 mb-2">Precision Cam Die</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Blok silinder aluminium ringan dengan pendinginan optimal dan tahan tekanan tinggi.</p>
+                <button onclick="switchTab('product-showcase')" class="mt-4 text-sm font-bold text-brand-red hover:underline flex items-center space-x-1">
+                  <span>Lihat Spesifikasi </span>
+                  <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 group hover:-translate-y-2 transition-all duration-300">
+              <img src="https://cdn.corenexis.com/f/8ku8KF7q.png" class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500" alt="EV Battery">
+              <div class="p-6">
+                <span class="text-xs font-bold text-brand-red uppercase tracking-wider">INSPECTION JIG AND FIXTURE</span>
+                <h3 class="text-xl font-bold mt-1 mb-2">Structural Body Bracket</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Alat ukur inspeksi kualitas presisi tinggi dengan sistem referensi datum ganda untuk memastikan akurasi dimensi komponen.</p>
+                <button onclick="switchTab('product-showcase')" class="mt-4 text-sm font-bold text-brand-red hover:underline flex items-center space-x-1">
+                  <span>Lihat Spesifikasi</span>
+                  <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- TAB 2: PRODUCT SHOWCASE (DIBANYAKIN MINIMAL 6 PRODUK DENGAN FOTO & SPESIFIKASI) -->
+    <div id="product-showcase" class="tab-content py-16">
+      <div class="container mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <span class="text-brand-red font-bold uppercase tracking-widest text-xs">Katalog Manufaktur Presisi</span>
+          <h1 class="text-4xl font-extrabold mt-2 mb-4">Showcase Produk PT Kishi Mnufaktur Indonesia</h1>
+          <p class="text-gray-500 dark:text-gray-400">Seluruh komponen diproduksi menggunakan mesin presisi tinggi berteknologi otomatisasi Industri.</p>
+        </div>
+
+        <!-- Product Filter Buttons -->
+        <div class="flex flex-wrap justify-center gap-3 mb-12">
+          <button onclick="filterProducts('all')" class="px-5 py-2 rounded-full font-bold text-sm bg-brand-red text-white transition-all">Semua Produk (6)</button>
+          <button onclick="filterProducts('stamping')" class="px-5 py-2 rounded-full font-bold text-sm bg-gray-200 dark:bg-gray-700 hover:bg-brand-red hover:text-white transition-all">Metal Stamping</button>
+          <button onclick="filterProducts('diecasting')" class="px-5 py-2 rounded-full font-bold text-sm bg-gray-200 dark:bg-gray-700 hover:bg-brand-red hover:text-white transition-all"> Die-Casting</button>
+          <button onclick="filterProducts('ev')" class="px-5 py-2 rounded-full font-bold text-sm bg-gray-200 dark:bg-gray-700 hover:bg-brand-red hover:text-white transition-all">INSPECTION JIG AND FIXTURE</button>
+        </div>
+
+        <!-- 6 Products Grid -->
+        <div class="grid md:grid-cols-3 gap-8">
+          
+          <!-- Product 1 -->
+          <div class="product-item stamping bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-2 transition-all duration-300">
+            <img src="https://cdn.imagetourls.com/uploads/tyImg/kWdgGsxq.jpg" class="w-full h-56 object-cover" alt="Sasis Bodi">
+            <div class="p-6">
+              <span class="text-xs font-bold text-brand-red">DIE-CASTING DIVISION</span>
+              <h3 class="text-xl font-bold mt-1 mb-2">DIE STEEL</h3>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Plat pemikul beban utama sasis mobil dengan tingkat kekuatan tarik hingga 980 MPa.</p>
+              <button onclick="openProductModal('DIE STEEL', 'DIE-CASTING DIVISION', 'High-Tensile Steel', '± 0.05 mm', '', 'https://cdn.imagetourls.com/uploads/tyImg/kWdgGsxq.jpg')" class="w-full bg-gray-900 text-white dark:bg-white dark:text-gray-900 py-2.5 rounded-xl font-bold text-sm hover:bg-brand-red dark:hover:bg-brand-red dark:hover:text-white transition-all">
+                Lihat Spesifikasi 
+              </button>
+            </div>
+          </div>
+
+          <!-- Product 2 -->
+          <div class="product-item diecasting bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-2 transition-all duration-300">
+            <img src="https://cdn.imagetourls.com/uploads/tyImg/gFdaN3V4.jpg" class="w-full h-56 object-cover" alt="Engine Cylinder">
+            <div class="p-6">
+              <span class="text-xs font-bold text-brand-red">DIE-CASTING DIVISION</span>
+              <h3 class="text-xl font-bold mt-1 mb-2">Precision Cam Die</h3>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Blok silinder aluminium ringan dengan pendinginan optimal dan tahan tekanan tinggi.</p>
+              <button onclick="openProductModal('Precision Cam Die', 'DIE-CASTING DIVISION', 'Aluminum Alloy ADC12', '± 0.005 mm', '', 'https://cdn.imagetourls.com/uploads/tyImg/gFdaN3V4.jpg')" class="w-full bg-gray-900 text-white dark:bg-white dark:text-gray-900 py-2.5 rounded-xl font-bold text-sm hover:bg-brand-red dark:hover:bg-brand-red dark:hover:text-white transition-all">
+                Lihat Spesifikasi 
+              </button>
+            </div>
+          </div>
+
+          <!-- Product 3 -->
+          <div class="product-item ev bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-2 transition-all duration-300">
+            <img src="https://cdn.corenexis.com/f/8ku8KF7q.png" class="w-full h-56 object-cover" alt="EV Battery Case">
+            <div class="p-6">
+              <span class="text-xs font-bold text-brand-red">INSPECTION JIG</span>
+              <h3 class="text-xl font-bold mt-1 mb-2">Precision Checking Fixture</h3>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Alat ukur inspeksi kualitas presisi tinggi dengan sistem referensi datum ganda untuk memastikan akurasi dimensi komponen bracket bodi bawah kendaraan sebelum perakitan massal.</p>
+              <button onclick="openProductModal('Precision Checking Fixture', 'Inspection Jig', 'High-Tensile Steel 980MPa', '± 0.01 mm', '', 'https://cdn.corenexis.com/f/8ku8KF7q.png')" class="w-full bg-gray-900 text-white dark:bg-white dark:text-gray-900 py-2.5 rounded-xl font-bold text-sm hover:bg-brand-red dark:hover:bg-brand-red dark:hover:text-white transition-all">
+                Lihat Spesifikasi 
+              </button>
+            </div>
+          </div>
+
+          <!-- Product 4 -->
+          <div class="product-item stamping bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-2 transition-all duration-300">
+            <img src="https://cdn.imagetourls.com/uploads/tyImg/5mej1VhL.jpg" class="w-full h-56 object-cover" alt="Engine Bracket">
+            <div class="p-6">
+              <span class="text-xs font-bold text-brand-red">STAMPING DIVISION</span>
+              <h3 class="text-xl font-bold mt-1 mb-2">Precision Engine Mounting Bracket</h3>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Braket penopang mesin berbahan baja berkekuatan ekstra penahan getaran halus.</p>
+              <button onclick="openProductModal('Precision Engine Mounting Bracket', 'STAMPING DIVISION', 'SAPH440 Structural Steel', '± 0.015 mm', '', 'https://cdn.imagetourls.com/uploads/tyImg/lmewIp9D.jpg')" class="w-full bg-gray-900 text-white dark:bg-white dark:text-gray-900 py-2.5 rounded-xl font-bold text-sm hover:bg-brand-red dark:hover:bg-brand-red dark:hover:text-white transition-all">
+                Lihat Spesifikasi 
+              </button>
+            </div>
+          </div>
+
+          <!-- Product 5 -->
+          <div class="product-item diecasting bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-2 transition-all duration-300">
+            <img src="https://cdn.corenexis.com/f/WNj7PNkp.png" class="w-full h-56 object-cover" alt="Transmission Housing">
+            <div class="p-6">
+              <span class="text-xs font-bold text-brand-red">DIE-CASTING DIVISION</span>
+              <h3 class="text-xl font-bold mt-1 mb-2">Die-Casting Mould</h3>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Casing transmisi otomatis dengan kerapatan material bebas dari kebocoran oli mikro.</p>
+              <button onclick="openProductModal('Die-Casting Mould', 'DIE-CASTING DIVISION', 'Aluminum Alloy ', '± 0.008 mm', '', 'https://cdn.corenexis.com/f/WNj7PNkp.png')" class="w-full bg-gray-900 text-white dark:bg-white dark:text-gray-900 py-2.5 rounded-xl font-bold text-sm hover:bg-brand-red dark:hover:bg-brand-red dark:hover:text-white transition-all">
+                Lihat Spesifikasi 
+              </button>
+            </div>
+          </div>
+
+          <!-- Product 6 -->
+          <div class="product-item ev bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-2 transition-all duration-300">
+            <img src="https://cdn.corenexis.com/f/s8euPVrF.png" class="w-full h-56 object-cover" alt="EV Cooling Plate">
+            <div class="p-6">
+              <span class="text-xs font-bold text-brand-red">INSPECTION JIG</span>
+              <h3 class="text-xl font-bold mt-1 mb-2">Structural Body Bracket</h3>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Alat bantu inspeksi kualitas (checking fixture) berpresisi tinggi yang dilengkapi sistem Pin Lock dan indikator toleransi permukaan (flush & gap) untuk memastikan keakuratan dimensi komponen bracket bodi kendaraan sesuai standar pabrikan.</p>
+              <button onclick="openProductModal('Structural Body Bracket', 'DIE-CASTING DIVISION', 'High thermal Conductivity Aluminum', '± 0.01 mm', '', 'https://cdn.corenexis.com/f/s8euPVrF.png')" class="w-full bg-gray-900 text-white dark:bg-white dark:text-gray-900 py-2.5 rounded-xl font-bold text-sm hover:bg-brand-red dark:hover:bg-brand-red dark:hover:text-white transition-all">
+                Lihat Spesifikasi 
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+     
+    
+
+    <!-- TAB 3: EXECUTIVE BOARD -->
+    <div id="executive-board" class="tab-content py-16">
+      <div class="container mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <span class="text-brand-red font-bold uppercase tracking-widest text-xs">Jajaran Kepemimpinan</span>
+          <h1 class="text-4xl font-extrabold mt-2 mb-4">Executive Board & Manajemen</h1>
+          <p class="text-gray-500 dark:text-gray-400">Pemimpin berpengalaman yang mengarahkan inovasi dan keberlanjutan PT Kishi Manufaktur Indonesia.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 text-center p-6">
+           
+            <h3 class="text-xl font-bold">Ade Kusnadi </h3>
+            <p class="text-sm text-brand-red font-semibold mb-3">President Director</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400"></p>
+          </div>
+
+          <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 text-center p-6">
+           
+            <h3 class="text-xl font-bold">Lukman</h3>
+            <p class="text-sm text-brand-red font-semibold mb-3">Vice President Director</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400"></p>
+          </div>
+
+          <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 text-center p-6">
+           
+            <h3 class="text-xl font-bold">Roni Rafael                                         </h3>
+            <p class="text-sm text-brand-red font-semibold mb-3">Director of Manufacturing</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: COMPANY MILESTONE (SEBELUMNYA KOSONG, KINI SUDAH ADA KONTEN) -->
+    
+    <!-- TAB 5: AWARDS & CERTIFICATION (SEBELUMNYA KOSONG, KINI SUDAH ADA KONTEN) -->
+    
+
+    <!-- TAB 6: HOW WE MANUFACTURE (SEBELUMNYA KOSONG, KINI SUDAH ADA KONTEN) -->
+    
+
+    <!-- TAB 7: FACTORY FACILITIES -->
+    <div id="factory-facilities" class="tab-content py-16">
+      <div class="container mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <span class="text-brand-red font-bold uppercase tracking-widest text-xs">Infrastruktur</span>
+          <h1 class="text-4xl font-extrabold mt-2 mb-4">Fasilitas Pabrik </h1>
+          <p class="text-gray-500 dark:text-gray-400">Pabrik PT Kishi Manufaktur Indonesia berlokasi di Jalan Raya Setu-Serang RT 002. Kp. Cikedokan, Cibening, Kec. Setu, Kabupaten Bekasi, Jawa Barat 17530</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700">
+            <img src="https://cdn.imagetourls.com/uploads/tyImg/Mhy6MCQI.jpg" class="w-full h-64 object-cover" alt="Plant 1">
+            <div class="p-6">
+              <h3 class="text-2xl font-bold mb-2"> Storage Area</h3>
+              <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Area perakitan dan penyimpanan cetakan (dies/mould) yang dilengkapi dengan sistem overhead crane untuk memudahkan mobilisasi komponen berat secara aman dan terorganisir di dalam zona produksi.</p>
+              <div class="flex items-center space-x-4 text-xs font-semibold text-brand-red">
+                <span> </span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700">
+            <img src="https://cdn.imagetourls.com/uploads/tyImg/sAztnvcX.jpg" class="w-full h-64 object-cover" alt="Plant 2">
+            <div class="p-6">
+              <h3 class="text-2xl font-bold mb-2">Lini Mesin Stamping & Press Presisi.</h3>
+              <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Fasilitas lini produksi dengan jajaran mesin stamping berkapasitas besar (hingga 130 Ton) yang dirancang khusus untuk memproduksi komponen lembaran logam bodi otomotif dengan tingkat akurasi dan efisiensi tinggi.</p>
+              <div class="flex items-center space-x-4 text-xs font-semibold text-brand-red">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- TAB 8: CORPORATE VALUES -->
+    <div id="corporate-values" class="tab-content py-16">
+      <div class="container mx-auto px-6 max-w-4xl">
+        <h1 class="text-4xl font-extrabold mb-6 text-center">Visi & Misi Perusahaan</h1>
+        <p class="text-gray-500 text-center mb-12">Menjadi mitra utama manufaktur presisi berkelas dunia dengan mengutamakan kualitas, inovasi, dan keselamatan kerja.</p>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md border">
+            <h3 class="text-xl font-bold mb-2 text-brand-red">VISI</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Menjadi perusahaan  manufaktur yang unggul, terpercaya, dan berdaya saing global dalam menghasilkan produk, komponen, dan solusi industri melalui kualitas, presisi, inovasi, teknologi, dan pelayanan terbaik.
+</p>
+          </div>
+          <div class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md border">
+            <h3 class="text-xl font-bold mb-2 text-brand-red">MISI</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Menghasilkan produk dan komponen industri bermutu tinggi dengan kualitas global untuk mencapai kepuasan pelanggan.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 9: HUBUNGI KAMI -->
+    <div id="contact-us" class="tab-content py-16">
+      <div class="container mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <span class="text-brand-red font-bold uppercase tracking-widest text-xs">Layanan Informasi & Bisnis</span>
+          <h1 class="text-4xl font-extrabold mt-2 mb-4">Hubungi  PT Kishi Manufaktur Indonesia</h1>
+          <p class="text-gray-500 dark:text-gray-400">Tim profesional kami siap melayani pertanyaan kemitraan, penawaran harga , dan kunjungan pabrik.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 mb-16">
+          <div class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 text-center hover:-translate-y-2 transition-all">
+            <div class="w-16 h-16 bg-green-500/10 text-green-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <i data-lucide="message-square" class="w-8 h-8"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">WhatsApp Official</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Respon cepat untuk pertanyaan layanan bisnis & penawaran komponen.</p>
+            <a href="https://wa.me/628561714148?text=Halo%20PT%20Kishi%20Manufaktur%20Indonesia,%20saya%20ingin%20mengajukan%20pertanyaan." target="_blank" class="inline-flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-3 rounded-full transition-all w-full justify-center">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>Chat Via WhatsApp</span>
+            </a>
+          </div>
+
+          <div class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 text-center hover:-translate-y-2 transition-all">
+            <div class="w-16 h-16 bg-brand-red/10 text-brand-red rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <i data-lucide="mail" class="w-8 h-8"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Email Perusahaan</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Kirimkan proposal kemitraan atau spesifikasi teknis komponen .</p>
+            <a href="mailto: kmi_kishi@yahoo.com?subject=Inquiry%20Kemitraan%20PT%20Kishi" class="inline-flex items-center space-x-2 bg-brand-red hover:bg-brand-darkred text-white font-bold px-6 py-3 rounded-full transition-all w-full justify-center">
+              <i data-lucide="mail" class="w-4 h-4"></i>
+              <span>Kirim Email Resmi</span>
+            </a>
+          </div>
+
+          <div class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 text-center hover:-translate-y-2 transition-all">
+            <div class="w-16 h-16 bg-blue-500/10 text-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <i data-lucide="map-pin" class="w-8 h-8"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Lokasi Pabrik</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Jalan Raya Setu-Serang RT 002. Kp. Cikedokan, Cibening, Kec. Setu, Kabupaten Bekasi, Jawa Barat 17530
+                        </p></p>
+            <a href="https://maps.app.goo.gl/9RurHuQyrPn2BsuT6" target="_blank" class="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-full transition-all w-full justify-center">
+              <i data-lucide="navigation" class="w-4 h-4"></i>
+              <span>Buka di Google Maps</span>
+            </a>
+          </div>
+        </div>
+
+        
+
+          
+  </main>
+
+  <!-- PRODUCT SPECIFICATION MODAL LIGHTBOX -->
+  <div id="product-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-800 w-full max-w-3xl rounded-3xl overflow-hidden shadow-2xl relative border border-gray-100 dark:border-gray-700 animate-fadeIn">
+      <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 bg-black/50 text-white p-2 rounded-full hover:bg-black">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+      <div class="grid md:grid-cols-2">
+        <img id="modal-img" src="" class="w-full h-80 md:h-full object-cover" alt="Detail Produk">
+        <div class="p-8 space-y-4">
+          <span id="modal-division" class="text-xs font-bold text-brand-red">DIVISION</span>
+          <h3 id="modal-title" class="text-2xl font-bold">Nama Produk</h3>
+          <div class="space-y-3 text-sm pt-2">
+            <div class="flex justify-between border-b py-2">
+              <span class="text-gray-500">Material :</span>
+              <span id="modal-material" class="font-bold"></span>
+            </div>
+            <div class="flex justify-between border-b py-2">
+              <span class="text-gray-500">Toleransi Presisi:</span>
+              <span id="modal-tolerance" class="font-bold text-brand-red"></span>
+            </div>
+            <div class="flex justify-between border-b py-2">
+              <span class="text-gray-500"></span>
+              <span id="modal-output" class="font-bold"></span>
+            </div>
+          </div>
+          <button onclick="closeProductModal(); switchTab('contact-us');" class="w-full bg-brand-red hover:bg-brand-darkred text-white py-3 rounded-xl font-bold text-sm mt-4 shadow-lg transition-all flex items-center justify-center space-x-2">
+            <i data-lucide="file-text" class="w-4 h-4"></i>
+            <span>Minta Penawaran </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Corporate Footer -->
+  <footer class="bg-gray-900 text-gray-300 py-16 border-t border-gray-800">
+    <div class="container mx-auto px-6 grid md:grid-cols-3 gap-12">
+      <div class="space-y-4">
+        <div class="flex items-center space-x-3">
+          <img src="https://cdn.corenexis.com/f/Yk0Durc0.png" alt="KISHI MANUFAKTUR" class="w-16 h-16">
+          <span class="font-bold text-white text-lg"> PT KISHI MANUFAKTUR INDONESIA</span>
+        </div>
+        <p class="text-sm text-gray-400">Penyedia komponen otomotif dan plat cetak logam presisi berteknologi tinggi di Indonesia.</p>
+      </div>
+      <div>
+        <h4 class="font-bold text-white mb-4">Navigasi Utama</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="#" onclick="switchTab('corporate-values')" class="hover:text-white">Visi & Misi Perusahaan</a></li>
+          <li><a href="#" onclick="switchTab('product-showcase')" class="hover:text-white">Showcase Produk</a></li>
+      
+          <li><a href="#" onclick="switchTab('awards')" class="hover:text-white"></a></li>
+          <li><a href="#" onclick="switchTab('factory-facilities')" class="hover:text-white">Fasilitas Pabrik</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold text-white mb-4">Kontak Cepat</h4>
+        <p class="text-sm text-gray-400 mb-2">Jalan Raya Setu-Serang RT 002. Kp. Cikedokan, Cibening, Kec. Setu, Kabupaten Bekasi, Jawa Barat 17530
+                        </p></p>
+        <p class="text-sm text-gray-400 mb-2">WhatsApp: +62 856-1714-148</p>
+        <p class="text-sm text-gray-400">Email: kmi_kishi@yahoo.com</p>
+      </div>
+    </div>
+    <div class="container mx-auto px-6 mt-12 pt-8 border-t border-gray-800 text-center text-xs text-gray-500">
+      &copy; 2026 PT Kishi Manufaktur Indonesia. Hak Cipta Dilindungi Undang-Undang.
+    </div>
+  </footer>
+
+  <!-- SCRIPT ENGINE -->
+  <script>
+    lucide.createIcons();
+
+    function toggleTheme() {
+      document.documentElement.classList.toggle('dark');
+    }
+
+    // Dynamic Tab Switching System
+    function switchTab(tabId) {
+      const contents = document.querySelectorAll('.tab-content');
+      contents.forEach(content => content.classList.remove('active'));
+
+      const target = document.getElementById(tabId);
+      if (target) {
+        target.classList.add('active');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Hero Banner Carousel
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('#hero-slider .slide');
+    
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.style.opacity = i === index ? '1' : '0'
+      });
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    setInterval(nextSlide, 5000);
+
+    // Product Category Filter
+    function filterProducts(category) {
+      const items = document.querySelectorAll('.product-item');
+      items.forEach(item => {
+        if (category === 'all' || item.classList.contains(category)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    // Product Modal Lightbox
+    function openProductModal(title, division, material, tolerance, output, imgSrc) {
+      document.getElementById('modal-title').innerText = title;
+      document.getElementById('modal-division').innerText = division;
+      document.getElementById('modal-material').innerText = material;
+      document.getElementById('modal-tolerance').innerText = tolerance;
+      document.getElementById('modal-output').innerText = output;
+      document.getElementById('modal-img').src = imgSrc;
+      document.getElementById('product-modal').classList.remove('hidden');
+    }
+
+    function closeProductModal() {
+      document.getElementById('product-modal').classList.add('hidden');
+    }
+
+    // Mobile Menu & Search Modals
+    function toggleMobileMenu() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    }
+
+    function openSearchModal() {
+      document.getElementById('search-modal').classList.remove('hidden');
+      document.getElementById('search-input').focus();
+    }
+
+    function closeSearchModal() {
+      document.getElementById('search-modal').classList.add('hidden');
+    }
+
+    function handleSearch(event) {
+      const query = event.target.value.toLowerCase();
+      const resultsContainer = document.getElementById('search-results');
+      resultsContainer.innerHTML = '';
+
+      if (query.length < 2) return;
+
+      const keywords = [
+        { text: 'Showcase Produk & Spesifikasi', tab: 'product-showcase' },
+        { text: 'Company Milestone & Sejarah', tab: 'company-milestone' },
+        { text: ' ', tab: '' },
+        { text: 'Proses Produksi Presisi', tab: 'how-we-manufacture' },
+        { text: 'tas Pabrik & Plant', tab: 'factory-facilities' },
+        { text: 'Executive Board', tab: 'executive-board' },
+        { text: 'Hubungi Kami (WhatsApp, Email & Maps)', tab: 'contact-us' }
+      ];
+
+      const matches = keywords.filter(k => k.text.toLowerCase().includes(query));
+      matches.forEach(m => {
+        const item = document.createElement('div');
+        item.className = 'p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg cursor-pointer font-semibold text-sm';
+        item.innerText = m.text;
+        item.onclick = () => {
+          closeSearchModal();
+          switchTab(m.tab);
+        };
+        resultsContainer.appendChild(item);
+      });
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-message').innerText = message;
+      toast.classList.remove('opacity-0', 'translate-y-20', 'pointer-events-none');
+      
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-20', 'pointer-events-none');
+      }, 4000);
+    }
+
+    function handleContactSubmit(event) {
+      event.preventDefault();
+      showToast("Pesan Anda telah berhasil dikirim ke tim PT Kishi Manufaktur Indonesia!");
+      event.target.reset();
+    }
+
+    function changeLanguage(lang) {
+      showToast(`Bahasa diubah ke ${lang}`);
+    }
+  </script>
+</body>
+</html>
